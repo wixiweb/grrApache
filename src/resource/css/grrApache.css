@@ -1,9 +1,44 @@
 .status-bar{
-
+    font-size: 0em;
+    background-color: #fff;
+    width: 100%;
+    overflow: hidden;
+    border: 1px solid #ccc;
 }
 .status-bar-item{
-
+    display: inline-block;
+    height: 20px;
 }
-.state-{
-
+.state-waiting{
+    background-color: #BCE02E;
+}
+.state-starting{
+    background-color: #E0642E;
+}
+.state-reading{
+    background-color: #E0642E;
+}
+.state-sending{
+    background-color: #E0642E;
+}
+.state-keepalive{
+    background-color: #E0D62E;
+}
+.state-dns{
+    background-color: #E0642E;
+}
+.state-closing{
+    background-color: #E0642E;
+}
+.state-logging{
+    background-color: #E0642E;
+}
+.state-finishing{
+    background-color: #E0642E;
+}
+.state-cleaning{
+    background-color: #E0642E;
+}
+.state-idle{
+    background-color: #fcfcfc;
 }

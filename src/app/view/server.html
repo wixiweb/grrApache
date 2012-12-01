@@ -7,9 +7,12 @@
         <!--<script src="/app/grapache.js"></script>-->
         <link rel="stylesheet" href="/resource/css/normalize.min.css">
         <link rel="stylesheet" href="/resource/css/main.css">
+        <link rel="stylesheet" href="/resource/css/grrApache.css">
+        <link rel="stylesheet" href="/resource/css/effect.css">
         <link rel="stylesheet" href="/lib/jquery.mobile-1.2.0/jquery.mobile.structure-1.2.0.css">
         <link rel="stylesheet" href="/lib/jquery.mobile-1.2.0/jquery.mobile.theme-1.2.0.css">
         <script src="/lib/jquery-1.8.3/jquery-1.8.3.js"></script>
+        <script src="/lib/jquery-1.8.3/plugin/jquery.tmpl.js"></script>
         <script src="/lib/jquery.mobile-1.2.0/jquery.mobile-1.2.0.js"></script>
 
     </head>
@@ -23,20 +26,18 @@
     </div>
     <div data-role="content">
 
-        <ul data-role="listview" data-filter="true" data-theme="d" data-divider-theme="d">
-            <li data-template-name="liste">
-                <a href="index.html">
-                    <h3 data-template="title"></h3>
-                    <p><strong data-template="description"></strong></p>
-                    <p class="ui-li-aside" data-template="indice"></p>
-                </a>
-            </li>
-        </ul>
+        <ul class="list-container" data-role="listview" data-theme="c" data-divider-theme="c"></ul>
 
     </div>
     <div data-role="footer" data-position="fixed">
         <h4>Page Footer</h4>
     </div>
+
+    <script id="serverItem" type="text/x-jquery-tmpl">
+        <li data-template-name="liste" data-icon="arrow-r">
+            <h3>${title}</h3>
+        </li>
+    </script>
 
 </div>
 
@@ -44,52 +45,26 @@
 
     $(document).ready(function(){
 
-        /*
-        $('div[data-role=page]').live('pageinit', function(event){
-            // begin ajax call for tweets
-            var url = 'http://api.twitter.com/1/statuses/user_timeline.json?screen_name=commadelimited&callback=?';
-            $.getJSON(url,function(data){
-                    // load the template
-                    $.get('tmpl/tweet.mustache', function(tmpl){
-                            var s = '';
-                            $(data).each(function(index,tweet){
-                                    var data = {'image': tweet.user.profile_image_url, 'username':tweet.user.screen_name, 'tweet':tweet.text};
-                                    s += Mustache.to_html(tmpl, data);
-                            });
-                            $('ul').append(s).listview('refresh');
-                    })
-            })
-        });
-            */
-
-        var data = [{
-            'title':'test',
-            'description':'Salut !',
+        var data = {
+            'title':'http://www.apache.org',
+            'website':'www.apache.org',
+            'maxClient':450,
+            'status':{
+                waiting:120,
+                starting:10,
+                reading:10,
+                sending:29,
+                keepalive:0,
+                dns:0,
+                closing:0,
+                logging:0,
+                finishing:60,
+                cleaning:0,
+                idle:0
+            },
             'indice':'100%'
-        }, {
-            'title':'toto',
-            'description':'Salut toi !',
-            'indice':'50%'
-        }];
-
-        var $template = $('[data-template-name=liste]');
-        $template.hide();
+        };
         
-
-        $.each(data, function(index, item) {
-            var $templateCopy = $template.clone();
-            $templateCopy.show();
-            $.each(item, function(key, value) {
-                var elName = '[data-template='+key+']';
-                $templateCopy.find(elName).html(value);
-            });
-            $template.after($templateCopy);
-
-        });
-        
-
-
-
     });
 
 </script>

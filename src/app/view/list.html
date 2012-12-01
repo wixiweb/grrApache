@@ -8,6 +8,7 @@
         <link rel="stylesheet" href="/resource/css/normalize.min.css">
         <link rel="stylesheet" href="/resource/css/main.css">
         <link rel="stylesheet" href="/resource/css/grrApache.css">
+        <link rel="stylesheet" href="/resource/css/effect.css">
         <link rel="stylesheet" href="/lib/jquery.mobile-1.2.0/jquery.mobile.structure-1.2.0.css">
         <link rel="stylesheet" href="/lib/jquery.mobile-1.2.0/jquery.mobile.theme-1.2.0.css">
         <script src="/lib/jquery-1.8.3/jquery-1.8.3.js"></script>
@@ -33,13 +34,23 @@
     </div>
 
     <script id="serverItem" type="text/x-jquery-tmpl">
-        <li data-template-name="liste" data-icon="arrow-r">
+        <li data-icon="arrow-r">
             
             <a href="/app/view/server.html">
                 <h3>${title}</h3>
-                <img src="http://www.google.com/s2/favicons?domain=${website}" alt="France" class="ui-li-icon" style="min-height:24px;min-width:24px;"/>
-                <div class="graph">
-                    <div data-value="${available}" class="graph-available"></div><div data-value="${processed}" class="graph-processed"></div>
+                <!--<img src="http://www.google.com/s2/favicons?domain=${website}" alt="France" class="ui-li-icon" style="min-height:24px;min-width:24px;"/>-->
+                <div class="status-bar" data-value-total="${maxClient}">
+                    <div data-key="dns" data-value="${status.dns}" class="status-bar-item state-dns"></div>
+                    <div data-key="starting" data-value="${status.starting}" class="status-bar-item state-starting"></div>
+                    <div data-key="reading" data-value="${status.reading}" class="status-bar-item state-reading"></div>
+                    <div data-key="sending" data-value="${status.sending}" class="status-bar-item state-sending"></div>
+                    <div data-key="closing" data-value="${status.closing}" class="status-bar-item state-closing"></div>
+                    <div data-key="logging" data-value="${status.logging}" class="status-bar-item state-logging"></div>
+                    <div data-key="finishing" data-value="${status.finishing}" class="status-bar-item state-finishing"></div>
+                    <div data-key="cleaning" data-value="${status.cleaning}" class="status-bar-item state-cleaning"></div>
+                    <div data-key="keepalive" data-value="${status.keepalive}" class="status-bar-item state-keepalive"></div>
+                    <div data-key="waiting" data-value="${status.waiting}" class="status-bar-item state-waiting"></div>
+                    <div data-key="idle" data-value="${status.idle}" class="status-bar-item state-idle"></div>
                 </div>
                 <div class="ui-li-aside">
                     <span class="ui-li-count">${indice}</span>
@@ -62,23 +73,56 @@
         var data = [{
             'title':'http://www.apache.org',
             'website':'www.apache.org',
-            'description':'',
-            'processed':420,
-            'available':100,
+            'maxClient':450,
+            'status':{
+                waiting:120,
+                starting:10,
+                reading:10,
+                sending:29,
+                keepalive:0,
+                dns:0,
+                closing:0,
+                logging:0,
+                finishing:60,
+                cleaning:0,
+                idle:0
+            },
             'indice':'100%'
         }, {
             'title':'https://wixiweb.intra.wixiweb.net',
             'website':'www.wixiweb.fr',
-            'description':'',
-            'processed':25,
-            'available':150,
+            'maxClient':170,
+            'status':{
+                waiting:10,
+                starting:10,
+                reading:10,
+                sending:10,
+                keepalive:10,
+                dns:10,
+                closing:10,
+                logging:10,
+                finishing:10,
+                cleaning:10,
+                idle:0
+            },
             'indice':'50%'
         }, {
             'title':'https://doom.intra.wixiweb.net',
             'website':'doom.intra.wixiweb.net',
-            'description':'',
-            'processed':10,
-            'available':150,
+            'maxClient':150,
+            'status':{
+                waiting:10,
+                starting:10,
+                reading:10,
+                sending:10,
+                keepalive:10,
+                dns:10,
+                closing:10,
+                logging:10,
+                finishing:10,
+                cleaning:10,
+                idle:0
+            },
             'indice':'50%'
         }];
 
@@ -89,19 +133,15 @@
         $('[data-role="slider"]').slider();
 
 
-        $('.graph div').css('display', 'inline-block');
+        $('.status-bar').each(function(index, el){
 
-        $('.graph').each(function(index, el){
-            var graphProcessed = $(el).find('.graph-processed');
-            var graphAvailable = $(el).find('.graph-available');
-            var available = graphAvailable.data('value');
-            var processed = graphProcessed.data('value');
-            var total = graphProcessed.data('value') + graphAvailable.data('value');
-            graphAvailable.css('width', (available*100/total)+'px');
-            graphProcessed.css('width', (processed*100/total)+'px');
-
-            graphAvailable.css('border', '4px solid green');
-            graphProcessed.css('border', '4px solid red');
+            var maxClient = $(el).data('value-total');
+            $(el).find('.status-bar-item').each(function(indexItem, item){
+                var key = $(item).data('key');
+                var value = $(item).data('value');
+                $(item).css('width', (value*100/maxClient)+'%');
+            });
+            
         });
     });
 
