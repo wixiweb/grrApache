@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html class="no-js">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!--<script src="/app/grapache.js"></script>-->
+        <link rel="stylesheet" href="/resource/css/normalize.min.css">
+        <link rel="stylesheet" href="/resource/css/main.css">
+        <link rel="stylesheet" href="/lib/jquery.mobile-1.2.0/jquery.mobile.structure-1.2.0.css">
+        <link rel="stylesheet" href="/lib/jquery.mobile-1.2.0/jquery.mobile.theme-1.2.0.css">
+        <script src="/lib/jquery-1.8.3/jquery-1.8.3.js"></script>
+        <script src="/lib/jquery.mobile-1.2.0/jquery.mobile-1.2.0.js"></script>
+
+    </head>
+    <body>
+
+<div data-role="page">
+
+    <div data-role="header">
+        <a href="#" data-icon="arrow-l" data-rel="back">Back</a>
+        <h1>Page Title</h1>
+    </div>
+    <div data-role="content">
+
+        <ul data-role="listview" data-filter="true" data-theme="d" data-divider-theme="d">
+            <li data-template-name="liste">
+                <a href="index.html">
+                    <h3 data-template="title"></h3>
+                    <p><strong data-template="description"></strong></p>
+                    <p class="ui-li-aside" data-template="indice"></p>
+                </a>
+            </li>
+        </ul>
+
+    </div>
+    <div data-role="footer" data-position="fixed">
+        <h4>Page Footer</h4>
+    </div>
+
+</div>
+
+<script>
+
+    $(document).ready(function(){
+
+        /*
+        $('div[data-role=page]').live('pageinit', function(event){
+            // begin ajax call for tweets
+            var url = 'http://api.twitter.com/1/statuses/user_timeline.json?screen_name=commadelimited&callback=?';
+            $.getJSON(url,function(data){
+                    // load the template
+                    $.get('tmpl/tweet.mustache', function(tmpl){
+                            var s = '';
+                            $(data).each(function(index,tweet){
+                                    var data = {'image': tweet.user.profile_image_url, 'username':tweet.user.screen_name, 'tweet':tweet.text};
+                                    s += Mustache.to_html(tmpl, data);
+                            });
+                            $('ul').append(s).listview('refresh');
+                    })
+            })
+        });
+            */
+
+        var data = [{
+            'title':'test',
+            'description':'Salut !',
+            'indice':'100%'
+        }, {
+            'title':'toto',
+            'description':'Salut toi !',
+            'indice':'50%'
+        }];
+
+        var $template = $('[data-template-name=liste]');
+        $template.hide();
+        
+
+        $.each(data, function(index, item) {
+            var $templateCopy = $template.clone();
+            $templateCopy.show();
+            $.each(item, function(key, value) {
+                var elName = '[data-template='+key+']';
+                $templateCopy.find(elName).html(value);
+            });
+            $template.after($templateCopy);
+
+        });
+        
+
+
+
+    });
+
+</script>
+
+<!--
+        <script>
+            var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
+            (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+            g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+            s.parentNode.insertBefore(g,s)}(document,'script'));
+        </script>
+-->
+    </body>
+</html>
