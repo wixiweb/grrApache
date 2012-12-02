@@ -1,10 +1,15 @@
-grrapache.parserStatus = {
+var grrapache = grrapache || {};
+grrapache.model = grrapache.model || {};
+/**
+ *
+ */
+grrapache.model.parserStatus = {
     /**
      * @var string
      */
     content : '',
     /**
-     * @return grrapache.parserInfo
+     * @return grrapache.model.parserInfo
      */
     setContent : function(content) {
         if (typeof content === 'string') {
@@ -23,14 +28,15 @@ grrapache.parserStatus = {
      * @return object
      */
     run : function() {
-        var rows = this.getContent().split("\n"),
+        var that = this,
+            rows = this.getContent().split("\n"),
             attr = {}
         ;
                 
         $.each(rows, function(index, row) {
             if (row.trim().length > 0) {
                 var chunks = row.split(':'),
-                    key = chunks[0].toLowerCase().replace(' ', '_'),
+                    key = that.sanitizeKey(chunks[0]),
                     val = chunks[1].trim()
                 ;
 
@@ -41,5 +47,14 @@ grrapache.parserStatus = {
         this.content = '';
         
         return attr;
+    },
+    /**
+     * 
+     */
+    sanitizeKey : function(key) {
+        if (typeof key === 'string') {
+            key = key.toLowerCase().replace(' ', '_');
+        }
+        return key;
     }
 };

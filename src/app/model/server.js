@@ -1,4 +1,9 @@
-grrapache.server = function(url, infoPath, statusPath) {
+var grrapache = grrapache || {};
+grrapache.model = grrapache.model || {};
+/**
+ *
+ */
+grrapache.model.server = function(url, infoPath, statusPath) {
     this.url = url;
     this.infoPath = (typeof infoPath === 'string' && infoPath.length > 0)
         ? infoPath
@@ -14,8 +19,10 @@ grrapache.server = function(url, infoPath, statusPath) {
     this.statusData = {};
     this.scoreboard = null;
 };
-
-grrapache.server.prototype = {
+/**
+ *
+ */
+grrapache.model.server.prototype = {
     /**
      * @return string
      */
@@ -62,7 +69,6 @@ grrapache.server.prototype = {
         ];
         return chunks.join('/')
     },
-    
     /**
      * 
      */
@@ -89,19 +95,46 @@ grrapache.server.prototype = {
     getIsPopulate : function() {
         return this.isPopulate;
     },
+    /**
+     *
+     */
     setInfoData : function(data) {
         this.infoData = data;
         return this;
     },
-    getInfoDate : function() {
+    /**
+     *
+     */
+    getInfoData : function() {
         return this.infoData;
     },
+    /**
+     *
+     */
     setStatusData : function(data) {
         this.statusData = data;
         return this;
     },
+    /**
+     *
+     */
     getStatusData : function() {
         return this.statusData;
+    },
+    /**
+     *
+     */
+    getActualMaxClient : function() {
+        if (this.isPopulate() === false) {
+            return 0;
+        }
+        var info = this.getInfoData();
+        if (info.mpm_name === 'Prefork') {
+            return info.mpm_information.max_daemons;
+        }
+        else {
+            return this.getScoreboard().getData().length;
+        }
     }
     
 };
