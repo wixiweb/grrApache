@@ -1,4 +1,11 @@
 {
-    "version": "1.0.0",
-    "minified": false
+    "version" : "1.0.0",
+    "server"  : [
+        {
+            "id":"1",
+            "label":"localhost",
+            "url":"http://localhost:8080/"
+        }
+    ]
+
 }
