@@ -1,3 +1,25 @@
+th{
+    text-align:left;
+}
+.clearfix{
+    overflow:hidden;
+    zoom:1;
+}
+.fleft{
+    float:left;
+}
+.fright{
+    float:right;
+}
+.clear{
+    clear:both;
+}
+.margin-n{
+    margin-top:18px;
+}
+.margin-s{
+    margin-bottom:18px;
+}
 .status-bar{
     font-size: 0em;
     background-color: #fff;
@@ -55,4 +77,7 @@
 .btn-server{
     width: 50%;
     margin: 0 auto;
+}
+.pchart{
+    margin:0 10%;
 }

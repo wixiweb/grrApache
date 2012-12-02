@@ -179,6 +179,8 @@ grrapache.model.server.prototype = {
             'title':this.getLabel(),
             'website':this.getUrl(),
             'maxClient':this.getActualMaxClient(),
+            'version':this.getInfoData().server_version,
+            'architecture':this.getInfoData().server_architecture,
             'status':status,
             'indice':Math.round(parseFloat(this.getStatusData().cpuload) * 100) / 100
         };
