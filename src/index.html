@@ -121,154 +121,21 @@
 <script>
 
     $(document).ready(function(){
-        $.mobile.defaultPageTransition = "slide";
+        grrapache.controller.init();
 
         $('#server-list[data-role="page"]').bind('pageinit', function (event, ui) {
-
-            var data = [{
-                'title':'http://www.apache.org',
-                'website':'www.apache.org',
-                'maxClient':450,
-                'status':{
-                    waiting:120,
-                    starting:10,
-                    reading:10,
-                    sending:29,
-                    keepalive:0,
-                    dns:0,
-                    closing:0,
-                    logging:0,
-                    finishing:60,
-                    cleaning:0,
-                    idle:0
-                },
-                'indice':'100%'
-            }, {
-                'title':'https://wixiweb.intra.wixiweb.net',
-                'website':'www.wixiweb.fr',
-                'maxClient':170,
-                'status':{
-                    waiting:10,
-                    starting:10,
-                    reading:10,
-                    sending:10,
-                    keepalive:10,
-                    dns:10,
-                    closing:10,
-                    logging:10,
-                    finishing:10,
-                    cleaning:10,
-                    idle:0
-                },
-                'indice':'50%'
-            }, {
-                'title':'https://doom.intra.wixiweb.net',
-                'website':'doom.intra.wixiweb.net',
-                'maxClient':150,
-                'status':{
-                    waiting:10,
-                    starting:10,
-                    reading:10,
-                    sending:10,
-                    keepalive:10,
-                    dns:10,
-                    closing:10,
-                    logging:10,
-                    finishing:10,
-                    cleaning:10,
-                    idle:0
-                },
-                'indice':'50%'
-            }];
-
-            var $template = $('.list-container');
-            $template.empty();
-            $("#tpl-server-list-item").tmpl(data).appendTo($template);
-            $template.listview( "refresh" );
-            $('[data-role="slider"]').slider();
-
-
-            $('.status-bar').each(function(index, el){
-
-                var maxClient = $(el).data('value-total');
-                $(el).find('.status-bar-item').each(function(indexItem, item){
-                    var key = $(item).data('key');
-                    var value = $(item).data('value');
-                    $(item).css('width', (value*100/maxClient)+'%');
-                });
-
-            });
+            grrapache.controller.displayServerList();
         });
 
         $('#server-infos[data-role="page"]').live('pageinit', function (event, ui) {
-            var data = {
-                'title':'http://www.apache.org',
-                'website':'www.apache.org',
-                'maxClient':450,
-                'status':{
-                    waiting:120,
-                    starting:10,
-                    reading:10,
-                    sending:29,
-                    keepalive:0,
-                    dns:0,
-                    closing:0,
-                    logging:0,
-                    finishing:60,
-                    cleaning:0,
-                    idle:221
-                },
-                'cpu':'1'
-            };
-
-            // Load Content template
-            $("#tpl-server-info").tmpl(data).appendTo($('.infos-container'));
-
-            // Enable Slider
-            $('[data-role="slider"]').slider();
-
-            $("#busy-worker").sparkline(data.status, {
-                type: 'pie',
-                width: '128',
-                sliceColors: ['#BCE02E','#E0642E', '#E0642E', '#E0642E', '#E0D62E', '#E0642E', '#E0642E', '#E0642E', '#E0642E', '#E0642E', '#fcfcfc'],
-                height: '128',
-                borderWidth: 3,
-                borderColor: '#ccc'
-            });
-
-            $("#cpu-load").sparkline([data.cpu, 100], {
-                type: 'pie',
-                width: '128',
-                sliceColors: ['#E0642E', '#BCE02E'],
-                height: '128',
-                borderWidth: 3,
-                borderColor: '#ccc'
-            });
-
-
+            grrapache.controller.displayServer(
+                grrapache.controller.currentServer
+            );
         });
-
-        // Progressively hide the loader
-        $('.loader').css('opacity', 0);
-
-        $('.btn-server').hide();
-
-        // Close the splashscreen after 4 secs
-        var splashscreenTimeout = setTimeout(function() {
-            $.mobile.changePage('#server-list');
-            $('.loader').hide();
-            $('.btn-server').show();
-
-            clearTimeout(splashscreenTimeout);
-        }, 4000);
-
-
-            
-
     });
-    
+
 </script>
-        
+
 <!--
         <script>
             var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
@@ -279,3 +146,4 @@
 -->
     </body>
 </html>
+
