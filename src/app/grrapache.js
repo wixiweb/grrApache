@@ -34,7 +34,7 @@ grrapache.controller = {
             $('.loader').hide();
             $('.btn-server').show();
             clearTimeout(splashscreenTimeout);
-        }, 4000);
+        }, 2000);
     },
     /**
      *
@@ -56,11 +56,22 @@ grrapache.controller = {
             this.serverCollection = [];
             
             for (var j = 0; j < this.config.server.length; j++) {
-                var options = this.config.server[j];
+                var options = this.config.server[j],
+                    infoPath = (options.infoPath !== undefined)
+                        ? options.infoPath
+                        : undefined
+                    ,
+                    statusPath = (options.statusPath !== undefined)
+                        ? options.statusPath
+                        : undefined
+                ;
+                
                 var server = service.getServer(
                     options.id,
                     options.label,
-                    options.url
+                    options.url,
+                    infoPath,
+                    statusPath
                 );
                     
                 this.serverCollection.push(server);
@@ -146,7 +157,7 @@ grrapache.controller = {
                 sliceColors: ['#E0642E', '#BCE02E'],
                 height: pieSize,
                 borderWidth: 3,
-                borderColor: '#ccc'
+                borderColor: '#fff'
             });
 
             $("#cpu-load").sparkline([cpu, 100 - cpu], {
@@ -156,7 +167,7 @@ grrapache.controller = {
                 sliceColors: ['#E0642E', '#BCE02E'],
                 height: pieSize,
                 borderWidth: 3,
-                borderColor: '#ccc'
+                borderColor: '#fff'
             });
         };
         // Display server status template
@@ -164,6 +175,9 @@ grrapache.controller = {
             var data = server.getStatusData();
                 $container.html(
                     $("#tpl-server-status").tmpl({
+                        cpuLoad:Math.round(parseFloat(data.cpuload) * 100) / 100,
+                        busyWorkers:data.busyworkers,
+                        idleWorkers:server.getActualMaxClient() - data.busyworkers,
                         uptime:data.uptime,
                         totalAccesses:data.total_accesses,
                         totalKBytes:data.total_kbytes
@@ -172,13 +186,16 @@ grrapache.controller = {
         };
         // Display server info template
         var displayServerInfo = function(){
-            var data = server.getInfoData()
+            var data = server.getInfoData();
             $container.html(
                 $("#tpl-server-info").tmpl({
                     version:data.server_version,
                     architecture:data.server_architecture,
                     hostname:data.hostname_port,
-                    mpmName:data.mpm_name
+                    mpmName:data.mpm_name,
+                    maxDaemons:data.mpm_information.max_daemons,
+                    timeouts:data.timeouts.connection,
+                    keepalive:data.timeouts.keep_alive
                 })
             );
         };
