@@ -51,6 +51,9 @@ grrapache.service.server.prototype = {
             dataType : 'text',
             success : function(text) {
                 server.setStatusData(that.modStatusParser.setContent(text).run());
+                server.setScoreboard(new grrapache.model.scoreboard(
+                    server.getStatusData().scoreboard
+                ));
             }
         });
     }
