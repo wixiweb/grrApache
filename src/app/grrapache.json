@@ -3,8 +3,13 @@
     "server"  : [
         {
             "id":"1",
-            "label":"localhost",
-            "url":"http://localhost:8080/"
+            "label":"http://www.apache.org/server-status",
+            "url":"http://192.168.1.117/proxy.php?url=http://www.apache.org/"
+        },
+        {
+            "id":"2",
+            "label":"http://httpd.apache.org/server-status",
+            "url":"http://192.168.1.117/proxy.php?url=http://httpd.apache.org"
         }
     ]
 

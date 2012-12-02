@@ -130,7 +130,8 @@ grrapache.controller = {
         
         $('#server-title').html($('#server-title').html() + server.getLabel());
         var $container = $('.infos-container').first(),
-            pieSize = Math.round($(document).width() / 4)
+            pieSize = Math.round($(document).width() / 4),
+            dataHistory = {'busyworkers':[], 'cpuload':[]}
         ;
         // Display server pie chart
         var displayPieCharts = function() {
@@ -190,6 +191,25 @@ grrapache.controller = {
                     
                 })
             );
+                
+            $('#inline-busyworkers').sparkline(dataHistory['busyworkers'], {
+                type: 'line',
+                lineWidth: 2,
+                width: '100%',
+                height: '100',
+                spotRadius: 3,
+                chartRangeMax:server.getActualMaxClient()
+            });
+            
+            $('#inline-cpuload').sparkline(dataHistory['cpuload'], {
+                type: 'line',
+                lineWidth: 2,
+                width: '100%',
+                height: '100',
+                spotRadius: 3,
+                chartRangeMax:100
+            });
+
         };
         
         // Display handlers
@@ -215,6 +235,20 @@ grrapache.controller = {
         var refreshTimer = setInterval(function() {
             var serverService = that.getServerService();
             serverService.refreshStatusData(server);
+
+            
+            if(dataHistory['busyworkers'].length > 30){
+                dataHistory['busyworkers'].shift();
+            }
+            //dataHistory['busyworkers'].push(server.getStatusData().busyworkers);
+            dataHistory['busyworkers'].push(Math.floor((Math.random()*30)+1));
+
+            if(dataHistory['cpuload'].length > 30){
+                dataHistory['cpuload'].shift();
+            }
+            //dataHistory['cpuload'].push(server.getStatusData().cpuload);
+            dataHistory['cpuload'].push(Math.floor((Math.random()*30)+1));
+
             displayPieCharts();
             if ($('#server-info').length > 0) {
                 displayServerInfo();
@@ -229,6 +263,7 @@ grrapache.controller = {
 
         $('#server-infos[data-role="page"]').bind('pagebeforehide', function (event, ui) {
             clearInterval(refreshTimer);
+            dataHistory = {'busyworkers':[], 'cpuload':[]}
         });
     }
     
