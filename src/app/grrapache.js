@@ -36,16 +36,21 @@ grrapache.controller = {
             clearTimeout(splashscreenTimeout);
         }, 4000);
     },
-    
+    /**
+     *
+     */
+    getServerService : function() {
+        return new grrapache.service.server(
+            grrapache.model.parserInfo,
+            grrapache.model.parserStatus
+        );
+    },
     /**
      * 
      */
     getServerList : function() {
         var itemCollection = [],
-            service = new grrapache.service.server(
-            grrapache.model.parserInfo,
-            grrapache.model.parserStatus
-        );
+            service = this.getServerService();
 
         if (this.serverCollection === null) {
             this.serverCollection = [];
@@ -106,7 +111,7 @@ grrapache.controller = {
         }
         for (var i = 0; i < this.serverCollection.length; i++) {
             if (this.serverCollection[i].getId() == id) {
-                return this.serverCollection[i].toItem();
+                return this.serverCollection[i];
             }
         }
         return null;
@@ -115,34 +120,115 @@ grrapache.controller = {
      *
      */
     displayServer : function(id) {
-        var data = this.getServer(id);
+        var server = this.getServer(id);
         
-        if (data === null) {
+        if (server === null) {
             /* @todo error ! */
+            console.log(id);
+            throw new Exception('Server not found !');
         }
         
-        // Load Content template
-        $("#tpl-server-info").tmpl(data).appendTo($('.infos-container'));
+        $('#server-title').html($('#server-title').html() + server.getLabel());
+        var $container = $('.infos-container').first(),
+            pieSize = Math.round($(document).width() / 4)
+        ;
+        // Display server pie chart
+        var displayPieCharts = function() {
+            var busyWorker = server.getStatusData().busyworkers,
+                idleWorker = server.getActualMaxClient() - busyWorker,
+                cpu = server.getStatusData().cpuload
+            ;
 
-        // Enable Slider
-        $('[data-role="slider"]').slider();
+            $("#busy-worker").sparkline([busyWorker, idleWorker], {
+                type: 'pie',
+                width: pieSize,
+                offset:270,
+                sliceColors: ['#E0642E', '#BCE02E'],
+                height: pieSize,
+                borderWidth: 3,
+                borderColor: '#ccc'
+            });
 
-        $("#busy-worker").sparkline(data.status, {
-            type: 'pie',
-            width: '128',
-            sliceColors: ['#BCE02E','#E0642E', '#E0642E', '#E0642E', '#E0D62E', '#E0642E', '#E0642E', '#E0642E', '#E0642E', '#E0642E', '#fcfcfc'],
-            height: '128',
-            borderWidth: 3,
-            borderColor: '#ccc'
+            $("#cpu-load").sparkline([cpu, 100 - cpu], {
+                type: 'pie',
+                width: pieSize,
+                offset:270,
+                sliceColors: ['#E0642E', '#BCE02E'],
+                height: pieSize,
+                borderWidth: 3,
+                borderColor: '#ccc'
+            });
+        };
+        // Display server status template
+        var displayServerStatus = function() {
+            var data = server.getStatusData();
+                $container.html(
+                    $("#tpl-server-status").tmpl({
+                        uptime:data.uptime,
+                        totalAccesses:data.total_accesses,
+                        totalKBytes:data.total_kbytes
+                    })
+                );
+        };
+        // Display server info template
+        var displayServerInfo = function(){
+            var data = server.getInfoData()
+            $container.html(
+                $("#tpl-server-info").tmpl({
+                    version:data.server_version,
+                    architecture:data.server_architecture,
+                    hostname:data.hostname_port,
+                    mpmName:data.mpm_name
+                })
+            );
+        };
+        // Display server info template
+        var displayServerScoreboard = function(){
+            var data = server.getScoreboard()
+            $container.html(
+                $("#tpl-server-scoreboard").tmpl({
+                    
+                })
+            );
+        };
+        
+        // Display handlers
+        $('#info-handler').click(function(){
+            if ($('#server-info').length < 1) {
+                displayServerInfo();
+            }
         });
+        $('#status-handler').click(function(){
+            if ($('#server-status').length < 1) {
+                displayServerStatus();
+            }
+        });
+        $('#scoreboard-handler').click(function(){
+            if ($('#server-scoreboard').length < 1) {
+                displayServerScoreboard();
+            }
+        });
+        displayServerScoreboard();
+        displayPieCharts();
+        
+        var that = this;
+        var refreshTimer = setInterval(function() {
+            var serverService = that.getServerService();
+            serverService.refreshStatusData(server);
+            displayPieCharts();
+            if ($('#server-info').length > 0) {
+                displayServerInfo();
+            }
+            else if ($('#server-status').length > 0){
+                displayServerStatus();
+            }
+            else {
+                displayServerScoreboard();
+            }
+        }, 3000);
 
-        $("#cpu-load").sparkline([data.cpu, 100], {
-            type: 'pie',
-            width: '128',
-            sliceColors: ['#E0642E', '#BCE02E'],
-            height: '128',
-            borderWidth: 3,
-            borderColor: '#ccc'
+        $('#server-infos[data-role="page"]').bind('pagebeforehide', function (event, ui) {
+            clearInterval(refreshTimer);
         });
     }
     

@@ -55,7 +55,7 @@
     <script id="tpl-server-list-item" type="text/x-jquery-tmpl">
         <li data-icon="arrow-r">
 
-            <a href="#server-infos" data-id="test">
+            <a id="server-${id}" class="server-item" href="#server-infos">
                 <h3 style="vertical-align: top;line-height: 36px;">
                     <select data-role="slider" data-mini="true">
                         <option value="off">Off</option>
@@ -78,7 +78,7 @@
                     <div data-key="idle" data-value="${status.idle}" class="status-bar-item state-idle"></div>
                 </div>
                 <div class="ui-li-aside">
-                    <span class="ui-li-count">${indice}</span>
+                    <span class="ui-li-count">CPU ${indice}%</span>
                     
                 </div>
             </a>
@@ -91,28 +91,95 @@
 
     <div data-role="header" data-theme="b" class="header">
         <a href="#" data-icon="arrow-l" data-rel="back">Back</a>
-        <h1>${title}</h1>
+        <h1 id="server-title"><span style="font-weight: normal">grr</span>Apache - </h1>
     </div>
     <div data-role="content">
-        <div id="cpu-load"></div>
-        <div id="busy-worker"></div>
-        <div class="infos-container"></div>
-
+        <div id="pie-chart" class="clearfix margin-s">
+            <div class="fleft pchart" id="cpu-load"></div>
+            <div class="fright pchart" id="busy-worker"></div>
+        </div>
+        <div data-role="navbar" data-iconpos="left">
+            <ul>
+                <li>
+                    <a id="scoreboard-handler" href="#scoreboard" data-theme="" data-icon="refresh" class="ui-btn-active ui-state-persist">
+                        Scoreboard
+                    </a>
+                </li>
+                <li>
+                    <a id="status-handler" href="#status" data-theme="" data-icon="gear">
+                        Status
+                    </a>
+                </li>
+                <li>
+                    <a id="info-handler" href="#info" data-theme="" data-icon="info">
+                        Info
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="infos-container margin-n">
+        </div>
     </div>
-    <div data-role="footer" data-position="fixed">
-        <h4>Page Footer</h4>
+    <div data-role="footer" data-position="fixed" data-theme="d" style="text-align: center">
+        <img src="resource/img/grrApache-500x358.png" style="height:48px"/>
+        <img class="ui-btn-right" src="resource/img/wixiweb-175x480.png" style="height:36px;margin:6px"/>
     </div>
 
+    <script id="tpl-server-scoreboard" type="text/x-jquery-tmpl">
+        <div id="server-scoreboard">
+            <table>
+                <tbody>
+                    <tr>
+                        <th>Scoreboard</th>
+                        <td>${uptime}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </script>
+    <script id="tpl-server-status" type="text/x-jquery-tmpl">
+        <div id="server-status">
+            <table>
+                <tbody>
+                    <tr>
+                        <th>Uptime</th>
+                        <td>${uptime}</td>
+                    </tr>
+                    <tr>
+                        <th>Total Accesses</th>
+                        <td>${totalAccesses}</td>
+                    </tr>
+                    <tr>
+                        <th>Total ko</th>
+                        <td>${totalKBytes}</td>
+                    </tr>
+                    
+                </tbody>
+            </table>
+        </div>
+    </script>
     <script id="tpl-server-info" type="text/x-jquery-tmpl">
-        <div>
-            <h3>${title}</h3>
-            <div>
-                <label>refresh</label>
-                <select data-role="slider" data-mini="true">
-                    <option value="no">No</option>
-                    <option value="yes">Auto</option>
-                </select>
-            </div>
+        <div id="server-info">
+            <table>
+                <tbody>
+                    <tr>
+                        <th>Version</th>
+                        <td>${version}</td>
+                    </tr>
+                    <tr>
+                        <th>Architecture</th>
+                        <td>${architecture}</td>
+                    </tr>
+                    <tr>
+                        <th>Hostname</th>
+                        <td>${hostname}</td>
+                    </tr>
+                    <tr>
+                        <th>MPM Name</th>
+                        <td>${mpmName}</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </script>
     
