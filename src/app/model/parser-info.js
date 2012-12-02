@@ -1,10 +1,15 @@
-grrapache.parserInfo = {
+var grrapache = grrapache || {};
+grrapache.model = grrapache.model || {};
+/**
+ *
+ */
+grrapache.model.parserInfo = {
     /**
      * @var string
      */
     content : null,
     /**
-     * @return grrapache.parserInfo
+     * @return grrapache.model.parserInfo
      */
     setContent : function(xmlContent) {
         if (typeof content === 'object') {
@@ -23,7 +28,8 @@ grrapache.parserInfo = {
      * @return object
      */
     run : function() {
-        var attr = {},
+        var that = this,
+            attr = {},
             xml = this.getContent()
         ;
         
@@ -36,13 +42,49 @@ grrapache.parserInfo = {
                 val = $(this).find('tt').text()
             ;
 
-            key = key.replace(':', '').toLowerCase().replace(' ', '_');
+            key = that.sanitizeKey(key.replace(':', ''));
+            
+            switch (key) {
+                case 'timeouts' : 
+                    attr[key] = {};
+                    var chunks = val.replace(/\s{2,}/, ';').split(';');
+                    for (var i = 0; i < chunks.length; i++) {
+                        var subChunks = chunks[i].split(':');
+                        attr[key][that.sanitizeKey(subChunks[0])]
+                            = subChunks[1].trim()
+                        ;
+                    }
+                    break;
 
-            attr[key] = val;
+                case 'mpm_information' :
+                    attr[key] = {};
+                    var chunks = val.replace(/:\s/g, ':')
+                        .replace('Max Daemons', that.sanitizeKey('Max Daemons'))
+                        .split(' ')
+                    ;
+                    for (var i = 0; i < chunks.length; i++) {
+                        var subChunks = chunks[i].split(':');
+                        attr[key][that.sanitizeKey(subChunks[0])] = subChunks[1];
+                    }
+                    break;
+                
+                default : 
+                    attr[key] = val;
+                    break;
+            }
         });
         
         this.content = null;
         
         return attr;
+    },
+    /**
+     * 
+     */
+    sanitizeKey : function(key) {
+        if (typeof key === 'string') {
+            key = key.toLowerCase().replace(' ', '_');
+        }
+        return key;
     }
 };
