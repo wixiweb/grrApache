@@ -83,7 +83,11 @@ grrapache.model.parserInfo = {
      */
     sanitizeKey : function(key) {
         if (typeof key === 'string') {
-            key = key.toLowerCase().replace(' ', '_').replace('/', '_');
+            key = key.toLowerCase()
+                .replace(' ', '_')
+                .replace('/', '_')
+                .replace('-', '_')
+            ;
         }
         return key;
     }
