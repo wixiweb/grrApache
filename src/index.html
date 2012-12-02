@@ -19,6 +19,7 @@
         <script src="app/model/scoreboard.js"></script>
         <script src="app/model/parser-info.js"></script>
         <script src="app/model/parser-status.js"></script>
+        <script src="app/service/server.js"></script>
 
     </head>
     <body>
@@ -134,62 +135,10 @@
 
     $(document).ready(function(){
 
+        
+
         $('#server-list[data-role="page"]').bind('pageinit', function (event, ui) {
-            var data = [{
-                'title':'http://www.apache.org',
-                'website':'www.apache.org',
-                'maxClient':450,
-                'status':{
-                    waiting:120,
-                    starting:10,
-                    reading:10,
-                    sending:29,
-                    keepalive:0,
-                    dns:0,
-                    closing:0,
-                    logging:0,
-                    finishing:60,
-                    cleaning:0,
-                    idle:0
-                },
-                'indice':'100%'
-            }, {
-                'title':'https://wixiweb.intra.wixiweb.net',
-                'website':'www.wixiweb.fr',
-                'maxClient':170,
-                'status':{
-                    waiting:10,
-                    starting:10,
-                    reading:10,
-                    sending:10,
-                    keepalive:10,
-                    dns:10,
-                    closing:10,
-                    logging:10,
-                    finishing:10,
-                    cleaning:10,
-                    idle:0
-                },
-                'indice':'50%'
-            }, {
-                'title':'https://doom.intra.wixiweb.net',
-                'website':'doom.intra.wixiweb.net',
-                'maxClient':150,
-                'status':{
-                    waiting:10,
-                    starting:10,
-                    reading:10,
-                    sending:10,
-                    keepalive:10,
-                    dns:10,
-                    closing:10,
-                    logging:10,
-                    finishing:10,
-                    cleaning:10,
-                    idle:0
-                },
-                'indice':'50%'
-            }];
+            var data = grrapache.controller.getServerList();
 
             var $template = $('.list-container');
             $template.empty();
