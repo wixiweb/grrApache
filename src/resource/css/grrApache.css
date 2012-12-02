@@ -42,3 +42,17 @@
 .state-idle{
     background-color: #fcfcfc;
 }
+.loader{
+    opacity: 1;
+}
+.intro{
+    border : 1px solid #ccc;
+    width: 50%;
+    margin: 40px auto 0;
+    padding: 20px;
+    background: #fff;
+}
+.btn-server{
+    width: 50%;
+    margin: 0 auto;
+}

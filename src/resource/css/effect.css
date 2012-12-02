@@ -1,5 +1,6 @@
 .round
 , .status-bar
+, .intro
 {
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
@@ -11,4 +12,18 @@
 {
     -webkit-box-shadow: inset 0px 0px 5px 0px rgba(150, 150, 150, .5);
     box-shadow: inset 0px 0px 5px 0px rgba(150, 150, 150, .5);
+}
+
+.transition-3s
+, .loader{
+    transition: 5s;
+    -moz-transition: 5s;
+    -webkit-transition: 5s;
+    -o-transition: 5s;
+}
+
+.text-shadow
+,intro
+{
+    text-shadow:1px 1px 0px #FF00FF
 }
