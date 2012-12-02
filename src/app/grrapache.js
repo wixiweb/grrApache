@@ -46,7 +46,6 @@ $(document).ready(function(){
     var server = new grrapache.server('http://localhost:8080');
     
     grrapache.getServerStatus(server);
-    console.log(server.getScoreboard.countByKey('keepalive'));
     
     
 });
