@@ -13,12 +13,14 @@
         <script src="lib/jquery-1.8.3/jquery-1.8.3.js"></script>
         <script src="lib/jquery-1.8.3/plugin/jquery.tmpl.js"></script>
         <script src="lib/jquery.mobile-1.2.0/jquery.mobile-1.2.0.js"></script>
+        <script src="lib/jquery-1.8.3/plugin/jquery.sparkline.js"></script>
 
         <script src="app/grrapache.js"></script>
         <script src="app/model/server.js"></script>
         <script src="app/model/scoreboard.js"></script>
         <script src="app/model/parser-info.js"></script>
         <script src="app/model/parser-status.js"></script>
+        <script src="app/service/server.js"></script>
 
     </head>
     <body>
@@ -26,7 +28,7 @@
 <div data-role="page" id="splashscreen">
 
     <div data-role="header" data-theme="b">
-        <h1>Loading</h1>
+        <h1>Loading</h1>   
     </div>
     <div data-role="content">
         Go to <a href="#server-list" data-role="button">Server List ...</a>
@@ -87,12 +89,13 @@
 
 <div data-role="page" id="server-infos">
 
-    <div data-role="header" data-theme="b">
+    <div data-role="header" data-theme="b" class="header">
         <a href="#" data-icon="arrow-l" data-rel="back">Back</a>
-        <h1>Page Title</h1>
+        <h1>${title}</h1>
     </div>
     <div data-role="content">
-
+        <div id="cpu-load"></div>
+        <div id="busy-worker"></div>
         <div class="infos-container"></div>
 
     </div>
@@ -103,19 +106,6 @@
     <script id="tpl-server-info" type="text/x-jquery-tmpl">
         <div>
             <h3>${title}</h3>
-            <div class="status-bar" data-value-total="${maxClient}">
-                <div data-key="dns" data-value="${status.dns}" class="status-bar-item state-dns"></div>
-                <div data-key="starting" data-value="${status.starting}" class="status-bar-item state-starting"></div>
-                <div data-key="reading" data-value="${status.reading}" class="status-bar-item state-reading"></div>
-                <div data-key="sending" data-value="${status.sending}" class="status-bar-item state-sending"></div>
-                <div data-key="closing" data-value="${status.closing}" class="status-bar-item state-closing"></div>
-                <div data-key="logging" data-value="${status.logging}" class="status-bar-item state-logging"></div>
-                <div data-key="finishing" data-value="${status.finishing}" class="status-bar-item state-finishing"></div>
-                <div data-key="cleaning" data-value="${status.cleaning}" class="status-bar-item state-cleaning"></div>
-                <div data-key="keepalive" data-value="${status.keepalive}" class="status-bar-item state-keepalive"></div>
-                <div data-key="waiting" data-value="${status.waiting}" class="status-bar-item state-waiting"></div>
-                <div data-key="idle" data-value="${status.idle}" class="status-bar-item state-idle"></div>
-            </div>
             <div>
                 <label>refresh</label>
                 <select data-role="slider" data-mini="true">
@@ -130,11 +120,11 @@
 
 <script>
 
-
-
     $(document).ready(function(){
+        $.mobile.defaultPageTransition = "slide";
 
         $('#server-list[data-role="page"]').bind('pageinit', function (event, ui) {
+
             var data = [{
                 'title':'http://www.apache.org',
                 'website':'www.apache.org',
@@ -210,7 +200,7 @@
             });
         });
 
-        $('#server-infos[data-role="page"]').bind('pageinit', function (event, ui) {
+        $('#server-infos[data-role="page"]').live('pageinit', function (event, ui) {
             var data = {
                 'title':'http://www.apache.org',
                 'website':'www.apache.org',
@@ -226,31 +216,46 @@
                     logging:0,
                     finishing:60,
                     cleaning:0,
-                    idle:0
+                    idle:221
                 },
-                'indice':'100%'
+                'cpu':'1'
             };
 
-            var $template = $('.infos-container');
-            $("#tpl-server-info").tmpl(data).appendTo($template);
+            // Load Content template
+            $("#tpl-server-info").tmpl(data).appendTo($('.infos-container'));
+
+            // Enable Slider
             $('[data-role="slider"]').slider();
 
-            $('.status-bar').each(function(index, el){
-
-                var maxClient = $(el).data('value-total');
-                $(el).find('.status-bar-item').each(function(indexItem, item){
-                    var key = $(item).data('key');
-                    var value = $(item).data('value');
-                    $(item).css('width', (value*100/maxClient)+'%');
-                });
-
+            $("#busy-worker").sparkline(data.status, {
+                type: 'pie',
+                width: '128',
+                sliceColors: ['#BCE02E','#E0642E', '#E0642E', '#E0642E', '#E0D62E', '#E0642E', '#E0642E', '#E0642E', '#E0642E', '#E0642E', '#fcfcfc'],
+                height: '128',
+                borderWidth: 3,
+                borderColor: '#ccc'
             });
+
+            $("#cpu-load").sparkline([data.cpu, 100], {
+                type: 'pie',
+                width: '128',
+                sliceColors: ['#E0642E', '#BCE02E'],
+                height: '128',
+                borderWidth: 3,
+                borderColor: '#ccc'
+            });
+
+
         });
+        
 
         var splashscreenTimeout = setTimeout(function() {
             $.mobile.changePage('#server-list');
             clearTimeout(splashscreenTimeout);
         }, 1000);
+
+
+            
 
     });
     
