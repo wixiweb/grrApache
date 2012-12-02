@@ -1,4 +1,9 @@
-grrapache.scoreboard = function(data) {
+var grrapache = grrapache || {};
+grrapache.model = grrapache.model || {};
+/**
+ *
+ */
+grrapache.model.scoreboard = function(data) {
     /**
      * @var object
      */
@@ -24,10 +29,12 @@ grrapache.scoreboard = function(data) {
         this.setData(data);
     }
 }
-
-grrapache.scoreboard.prototype = {
+/**
+ *
+ */
+grrapache.model.scoreboard.prototype = {
     /**
-     * @return grrapache.scoreboard
+     * @return grrapache.model.scoreboard
      */
     setData : function(data) {
         if (typeof data === 'string') {
