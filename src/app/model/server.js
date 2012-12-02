@@ -3,7 +3,9 @@ grrapache.model = grrapache.model || {};
 /**
  *
  */
-grrapache.model.server = function(url, infoPath, statusPath) {
+grrapache.model.server = function(id, label, url, infoPath, statusPath) {
+    this.id = id;
+    this.label = label;
     this.url = url;
     this.infoPath = (typeof infoPath === 'string' && infoPath.length > 0)
         ? infoPath
@@ -23,6 +25,18 @@ grrapache.model.server = function(url, infoPath, statusPath) {
  *
  */
 grrapache.model.server.prototype = {
+    /**
+     * @return int
+     */
+    getId : function() {
+        return this.id;
+    },
+    /**
+     * @return string
+     */
+    getLabel : function() {
+        return this.label;
+    },
     /**
      * @return string
      */
@@ -125,7 +139,7 @@ grrapache.model.server.prototype = {
      *
      */
     getActualMaxClient : function() {
-        if (this.isPopulate() === false) {
+        if (this.getIsPopulate() === false) {
             return 0;
         }
         var info = this.getInfoData();
@@ -135,6 +149,39 @@ grrapache.model.server.prototype = {
         else {
             return this.getScoreboard().getData().length;
         }
+    },
+    /**
+     * 
+     */
+    toItem : function() {
+        var flags = [
+            'waiting',
+            'starting',
+            'reading',
+            'sending',
+            'keepalive',
+            'dns',
+            'closing',
+            'logging',
+            'finishing',
+            'cleaning',
+            'idle'
+        ],
+            status = {}
+        ;
+
+        for (var i = 0; i < flags.length; i++) {
+            status[flags[i]] = this.getScoreboard().countByKey(flags[i]);
+        } 
+
+        return {
+            'id':this.getId(),
+            'title':this.getLabel(),
+            'website':this.getUrl(),
+            'maxClient':this.getActualMaxClient(),
+            'status':status,
+            'indice':Math.round(parseFloat(this.getStatusData().cpuload) * 100) / 100
+        };
     }
     
 };
