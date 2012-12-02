@@ -13,11 +13,10 @@ grrapache.controller = {
     init : function() {
         $.mobile.defaultPageTransition = 'slide';
         
-        var splashscreenTimeout = setTimeout(function() {
-            $.mobile.changePage('#server-list');
-            clearTimeout(splashscreenTimeout);
-        }, 1000);
-        
+        // Progressively hide the loader
+        $('.loader').css('opacity', 0);
+        $('.btn-server').hide();
+       
         var that = this;
         $.ajax({
             url : 'app/grrapache.json',
@@ -28,6 +27,14 @@ grrapache.controller = {
                 that.config = json;
             }
         });
+
+        // Close the splashscreen after 4 secs
+        var splashscreenTimeout = setTimeout(function() {
+            $.mobile.changePage('#server-list');
+            $('.loader').hide();
+            $('.btn-server').show();
+            clearTimeout(splashscreenTimeout);
+        }, 4000);
     },
     
     /**
