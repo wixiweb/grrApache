@@ -95,8 +95,14 @@
     </div>
     <div data-role="content">
         <div id="pie-chart" class="clearfix margin-s">
-            <div class="fleft pchart" id="cpu-load"></div>
-            <div class="fright pchart" id="busy-worker"></div>
+            <div class="fleft pchart">
+                <div id="cpu-load"></div>
+                <p class="tctr"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> % CPU Usage</p>
+            </div>
+            <div class="fright pchart">
+                <div id="busy-worker"></div>
+                <p class="tctr"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> % Busy Workers</p>
+            </div>
         </div>
         <div data-role="navbar" data-iconpos="left">
             <ul>
@@ -142,18 +148,33 @@
             <table>
                 <tbody>
                     <tr>
+                        <th>CPU Usage</th>
+                        <td>${cpuLoad}%</td>
+                    </tr>
+                    <tr>
+                        <th>Busy Workers</th>
+                        <td>${busyWorkers}</td>
+                    </tr>
+                    <tr>
+                        <th>Idle Workers</th>
+                        <td>${idleWorkers}</td>
+                    </tr>
+                    <tr>
+                        <th>&nbsp;</th>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr>
                         <th>Uptime</th>
-                        <td>${uptime}</td>
+                        <td>${uptime} sec</td>
                     </tr>
                     <tr>
                         <th>Total Accesses</th>
                         <td>${totalAccesses}</td>
                     </tr>
                     <tr>
-                        <th>Total ko</th>
-                        <td>${totalKBytes}</td>
+                        <th>Total traffic</th>
+                        <td>${totalKBytes} ko</td>
                     </tr>
-                    
                 </tbody>
             </table>
         </div>
@@ -175,8 +196,24 @@
                         <td>${hostname}</td>
                     </tr>
                     <tr>
+                        <th>&nbsp;</th>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr>
                         <th>MPM Name</th>
                         <td>${mpmName}</td>
+                    </tr>
+                    <tr>
+                        <th>Max Daemons</th>
+                        <td>${maxDaemons}</td>
+                    </tr>
+                    <tr>
+                        <th>Timeouts</th>
+                        <td>${timeouts} sec</td>
+                    </tr>
+                    <tr>
+                        <th>Keep-Alive</th>
+                        <td>${keepalive} sec</td>
                     </tr>
                 </tbody>
             </table>
@@ -194,7 +231,7 @@
             grrapache.controller.displayServerList();
         });
 
-        $('#server-infos[data-role="page"]').live('pageinit', function (event, ui) {
+        $('#server-infos[data-role="page"]').live('pagebeforeshow', function (event, ui) {
             grrapache.controller.displayServer(
                 grrapache.controller.currentServer
             );
