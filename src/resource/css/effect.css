@@ -14,7 +14,7 @@
     box-shadow: inset 0px 0px 5px 0px rgba(150, 150, 150, .5);
 }
 
-.transition-3s
+.transition-5s
 , .loader{
     transition: 5s;
     -moz-transition: 5s;
