@@ -28,8 +28,7 @@
 	<preference name="android-installLocation" value="auto" />
 	
 	<icon src="icon.png" />
-	<gap:splash src="resource/img/loader.gif" />
 	
-	<preference name="permissions" value="none"/>
+	
 	<access origin="*" />
 </widget>
