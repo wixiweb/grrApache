@@ -1,7 +1,7 @@
 grrApache
 =========
 grrApache is a Graphical Mobile application for <strong>Apache Mod Status</strong>
-<img src="https://raw.github.com/wixiweb/grrApache/master/src/resource/img/grrApache-472x472.png" style="width:236px;height:236px" />
+<img src="https://raw.github.com/wixiweb/grrApache/master/src/resource/img/grrApache-500x358.png"/>
 
 ## Building
 

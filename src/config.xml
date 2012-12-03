@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+    <widget xmlns = "http://www.w3.org/ns/widgets"
+        xmlns:gap = "http://phonegap.com/ns/1.0"
+        id        = "org.wixiweb.grrapache"
+        version   = "0.1.0">
+	<!-- 
+	Phone Gap config.xml Documentation 
+	https://build.phonegap.com/docs/config-xml
+	-->
+
+    <name>grrApache</name>
+
+    <description>
+        grrApache is a Graphical Mobile application for Apache Mod Status
+    </description>
+
+    <author href="https://twitter.com/arnolem" email="contact@wixiweb.fr">
+        Arnaud Lemercier
+    </author>
+	<author href="https://twitter.com/maximemdotnet" email="contact@wixiweb.fr">
+        Maxime Mauchaussée
+    </author>
+	
+	<preference name="phonegap-version" value="2.1.0" />
+    <preference name="orientation"      value="default" />
+    <preference name="target-device"    value="tablet" />
+    <preference name="fullscreen"       value="false" />
+	<preference name="android-installLocation" value="auto" />
+	
+	<icon src="icon.png" />
+	<gap:splash src="resource/img/loader.gif" />
+	
+	<preference name="permissions" value="none"/>
+	<access origin="*" />
+</widget>
