@@ -11,7 +11,7 @@ grrapache.controller = {
      *
      */
     init : function() {
-        $.mobile.defaultPageTransition = 'slide';
+        $.mobile.defaultPageTransition = 'none';
         
         // Progressively hide the loader
         $('.loader').css('opacity', 0);
