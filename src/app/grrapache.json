@@ -4,21 +4,14 @@
         {
             "id":"1",
             "label":"http://www.apache.org/server-status",
-            "url":"http://172.16.2.20/proxy.php?url=http://www.apache.org/",
+            "url":"http://www.apache.org/",
             "statusPath":"server-status",
             "infoPath":"servinfo"
         },
         {
             "id":"2",
-            "label":"http://www.wixiweb.fr",
-            "url":"http://172.16.2.20/proxy.php?url=http://172.16.2.21:8080",
-            "statusPath":"server-status",
-            "infoPath":"server-info"
-        },
-        {
-            "id":"2",
             "label":"http://httpd.apache.org/server-status",
-            "url":"http://172.16.2.20/proxy.php?url=http://httpd.apache.org",
+            "url":"http://httpd.apache.org",
             "statusPath":"server-status",
             "infoPath":"servinfo"
         }
