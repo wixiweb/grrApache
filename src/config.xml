@@ -18,7 +18,7 @@
         Arnaud Lemercier
     </author>
 	<author href="https://twitter.com/maximemdotnet" email="contact@wixiweb.fr">
-        Maxime Mauchaussée
+        Maxime MauchaussÃ©e
     </author>
 	
 	<preference name="phonegap-version" value="2.1.0" />
@@ -26,9 +26,11 @@
     <preference name="target-device"    value="tablet" />
     <preference name="fullscreen"       value="false" />
 	<preference name="android-installLocation" value="auto" />
+	<preference name="permissions" value="none"/>
+	<access origin="*" />
 	
 	<icon src="icon.png" />
 	
 	
-	<access origin="*" />
+	
 </widget>
